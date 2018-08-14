@@ -289,8 +289,7 @@ class Contest:
 
             random.setstate(self.bot2_rng)
             try:
-                #output2 = self.bot2.get_move(input2)
-                output2 = raw_input("test")
+                output2 = self.bot2.get_move(input2)
             except KeyboardInterrupt:
                 raise
             except:

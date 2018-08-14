@@ -21,7 +21,6 @@
     <div class="container" style="width: 650px;">
       <div class="row">
         <div class="col-lg-12 text-center" >
-          <h1 >Candiates</h1>
           <hr/>
           <br/>
           <div id="content">
@@ -33,7 +32,7 @@
                   <input class="form-control input-lg" name="candidateName">
                   </input>
                   <span class="input-group-btn">
-                    <button type="submit" class="btn btn-primary btn-lg">Add Candidate</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Go</button>
                   </span>
                 </div>
               </div>
@@ -51,60 +50,177 @@
       if (typeof web3 !== 'undefined') {
         web3 = new Web3(web3.currentProvider);
       } else {
-        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+        web3 = new Web3(new Web3.providers.HttpProviders('http://localhost:8545'));
       }
       // Set Account
       web3.eth.defaultAccount = web3.eth.accounts[0];
       // Set Contract Abi
       var contractAbi = [
-								{
-									"constant": true,
-									"inputs": [],
-									"name": "candidateName",
-									"outputs": [
-										{
-											"name": "",
-											"type": "string"
-										}
-									],
-									"payable": false,
-									"stateMutability": "view",
-									"type": "function"
-								},
-								{
-									"constant": false,
-									"inputs": [
-										{
-											"name": "_name",
-											"type": "string"
-										}
-									],
-									"name": "setCandidate",
-									"outputs": [],
-									"payable": false,
-									"stateMutability": "nonpayable",
-									"type": "function"
-								},
-								{
-									"inputs": [],
-									"payable": false,
-									"stateMutability": "nonpayable",
-									"type": "constructor"
-								}
-							]; // Add Your Contract ABI here!!!
+        	{
+        		"constant": false,
+        		"inputs": [
+        			{
+        				"name": "choice",
+        				"type": "string"
+        			}
+        		],
+        		"name": "play",
+        		"outputs": [
+        			{
+        				"name": "w",
+        				"type": "int256"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "nonpayable",
+        		"type": "function"
+        	},
+        	{
+        		"constant": false,
+        		"inputs": [],
+        		"name": "register",
+        		"outputs": [],
+        		"payable": true,
+        		"stateMutability": "payable",
+        		"type": "function"
+        	},
+        	{
+        		"inputs": [],
+        		"payable": false,
+        		"stateMutability": "nonpayable",
+        		"type": "constructor"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "AmIPlayer1",
+        		"outputs": [
+        			{
+        				"name": "x",
+        				"type": "bool"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "AmIPlayer2",
+        		"outputs": [
+        			{
+        				"name": "x",
+        				"type": "bool"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "checkBothNotNull",
+        		"outputs": [
+        			{
+        				"name": "x",
+        				"type": "bool"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "getContractBalance",
+        		"outputs": [
+        			{
+        				"name": "amount",
+        				"type": "uint256"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "getMyBalance",
+        		"outputs": [
+        			{
+        				"name": "amount",
+        				"type": "uint256"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "getWinner",
+        		"outputs": [
+        			{
+        				"name": "x",
+        				"type": "int256"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "player1Choice",
+        		"outputs": [
+        			{
+        				"name": "",
+        				"type": "string"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	},
+        	{
+        		"constant": true,
+        		"inputs": [],
+        		"name": "player2Choice",
+        		"outputs": [
+        			{
+        				"name": "",
+        				"type": "string"
+        			}
+        		],
+        		"payable": false,
+        		"stateMutability": "view",
+        		"type": "function"
+        	}
+        ]; // Add Your Contract ABI here!!!
       // Set Contract Address
-      var contractAddress = '0x44ec1b105c29d08f0832000882a81c1897adc991'; // Add Your Contract address here!!!
+      var contractAddress = '0x9c905faa6476debc46fa958e5c9dc65daedf4983'; // Add Your Contract address here!!!
       // Set the Contract
       var contract = web3.eth.contract(contractAbi).at(contractAddress);
+      console.log(contract)
       // Display Candidate Name
-      contract.candidateName(function(err, candidateName) {
-        $('#candidateName').html(candidateName);
+      contract.register(function(error,result){
+        console.log(result);
+      });
+      contract.play("S");
+      contract.getWinner(function(error,result){
+        console.log(result);
       });
       // Change the Candidate Name
-      $('form').on('submit', function(event) {
-        event.preventDefault();
-        contract.setCandidate($('input').val());
-      })
+      // $('form').on('submit', function(event) {
+      //   event.preventDefault();
+      //   contract.setCandidate($('input').val());
+      // })
     </script>
   </body>
 </html>
